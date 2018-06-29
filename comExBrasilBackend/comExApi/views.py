@@ -1,5 +1,7 @@
 from django.http import HttpResponse
-
+from comExApi import models
+from rest_framework.decorators import api_view
+from bson import json_util, ObjectId
 
 def index(request):
     return HttpResponse("Hello, world. You're at the polls index.")
@@ -12,5 +14,5 @@ def get_something(request, *args, **kwargs):
     #limit = params['limit']
     #del params['skip']
     #del params['limit']
-    #events = models.Event.list(skip, limit, authenticated_user, **params)
-    #return HttpResponse(json_util.dumps(events), content_type='application/json', status=200)
+    resp = models.Api.getSome()
+    return HttpResponse(json_util.dumps(resp), content_type='application/json', status=200)
