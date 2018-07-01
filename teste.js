@@ -1,64 +1,70 @@
-
-function createCORSRequest(method, url) {
-    var xhr = new XMLHttpRequest();
-    if ("withCredentials" in xhr) {
-  
-      // Check if the XMLHttpRequest object has a "withCredentials" property.
-      // "withCredentials" only exists on XMLHTTPRequest2 objects.
-      xhr.open(method, url, true);
-  
-    } else if (typeof XDomainRequest != "undefined") {
-  
-      // Otherwise, check if XDomainRequest.
-      // XDomainRequest only exists in IE, and is IE's way of making CORS requests.
-      xhr = new XDomainRequest();
-      xhr.open(method, url);
-  
-    } else {
-  
-      // Otherwise, CORS is not supported by the browser.
-      xhr = null;
-  
-    }
-    return xhr;
-  }
-
-handler = (data) =>{
-    console.log(data)
-    console.log(data.target.response)
-}
-get_daaata = () =>{
-    console.log("aquiii")
-    var invocation = new XMLHttpRequest();
-    var url = 'http://localhost:8000/api/getSomething';
-
-    if(invocation) {    
-        invocation.open('GET', url, true);
-        invocation.onreadystatechange = handler;
-        invocation.send(); 
-    }
-    
-}
-get_daata = () =>{
-    var xhr = createCORSRequest('GET', 'http://localhost:8000/api/getSomething');
-    xhr.setRequestHeader('Access-Control-Allow-Origin','*');
-    console.log(xhr.send())
-
-}
-get_data = (paramns) => {
-    const myRequest = new Request('http://localhost:8000/api/getSomething', {method: 'GET'});
+function get_data(params,sucess){
+    url = 'http://localhost:8000/api/getSomething?' + params
+    const myRequest = new Request(url, {method: 'GET'});
     fetch(myRequest)
     .then(response => {
-        console.log(response);
         return response.json();
     })
     .then(response =>{
-        console.log(JSON.stringify(response))    
+        sucess(response)  
     })
     .catch(error => {
         console.log(error);
     });
 
 };
+var createTreemap = (data)=>{
+    console.log(data)
+    var g = d3.select('svg').attr('width', 300).attr('height', 200).select('g');
+    var vData = {"name" : "", "info" : "test", "children" : [
+        {"name" : "", "children" : [ 
+                {"size" : 40,
+                "name" : "algo" 
+                }, 
+                {"size" : 30 ,
+                 "name":"outro"
+                }
+            ] }, 
+        {"name" : "", "children" : [ 
+                {"size" : 10,
+                "name" : "algo2"
+                 }, 
+                {"size" : 20,
+                "name" : "algo3"
+                }
+        ] }
+    ]};
+      
+    var vLayout = d3.treemap().size([300, 200]).paddingOuter(0);
 
-this.get_data()
+    // Layout + Data
+    var vRoot = d3.hierarchy(vData).sum(function (d) { return d.size; });
+    var vNodes = vRoot.descendants();
+    vLayout(vRoot);
+    //var vSlices = g.selectAll('rect').data(vNodes).enter().append('rect');
+    var vSlices = g.selectAll('g').data(vNodes).enter().append('g');
+    var colors = ['white','#fbb4ae','#decbe4','#fbb4ae','#fbb4ae','#decbe4','#decbe4','#e5d8bd']
+    // Draw on screen
+    vSlices.append('rect')
+        .attr('x', function (d) { return d.x0; })
+        .attr('y', function (d) { return d.y0; })
+        .attr('width', function (d) { return d.x1 - d.x0; })
+        .attr('height', function (d) { return d.y1 - d.y0; })
+        .attr('fill', (d,i) => {return colors[i] })
+        .attr('stroke',"white")
+        .attr('class',"treeCell");
+    vSlices.append('text')
+    .attr('x', function (d) { return d.x0 + 10; })
+    .attr('y', function (d) { return d.y0 + 15; })
+    .attr('width', function (d) { return d.x1 - d.x0; })
+    .text((d)=>{return d.data.name})
+    .attr("class","span");
+    
+}
+
+var createMap = (data)=>{
+
+}
+
+get_data('data="algo"&outra="coisa"',createTreemap)
+
