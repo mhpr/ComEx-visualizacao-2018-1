@@ -90,8 +90,8 @@ if __name__ == "__main__":
         for k in ncm_mem:
             if i['CO_NCM'] == k['CO_NCM']:
                 auxHash['PRODUTO'] = k['NO_NCM_POR']
-                auxHash['SUBSET'] = k['CO_EXP_SUBSET']
-                auxHash['PPE'] = k['CO_PPE']
+                auxHash['SUBSET'] = int(k['CO_EXP_SUBSET'])
+                auxHash['PPE'] = int(k['CO_PPE'])
                 break
 
         for l in vias_mem:
@@ -113,11 +113,11 @@ if __name__ == "__main__":
         print("auxHash antes = {}".format(auxHash))
         #print("{} %".format(porcent))
         #time.sleep(1)
-        auxHash['ANO'] = i['CO_ANO']
-        auxHash['MES'] = i['CO_MES']
-        auxHash['QT_ESTAT'] = i['QT_ESTAT']
-        auxHash['PESO_LIQUIDO_KG'] = i['KG_LIQUIDO']
-        auxHash['VALOR'] = i['VL_FOB']
+        auxHash['ANO'] = int(i['CO_ANO'])
+        auxHash['MES'] = int(i['CO_MES'])
+        auxHash['QT_ESTAT'] = int(i['QT_ESTAT'])
+        auxHash['PESO_LIQUIDO_KG'] = int(i['KG_LIQUIDO'])
+        auxHash['VALOR'] = int(i['VL_FOB'])
 
         data.append(auxHash)
 
