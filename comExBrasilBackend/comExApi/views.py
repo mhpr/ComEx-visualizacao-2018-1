@@ -24,13 +24,15 @@ def index(request):
     return HttpResponse("Hello, world. You're at the polls index.")
 
 @api_view(['GET'])
-def get_something(request, *args, **kwargs):
+def get_treeMap(request, *args, **kwargs):
     params = url_params(request)
     print(params)
-    #authenticated_user = kwargs['authenticated_user']
-    #skip = params['skip']
-    #limit = params['limit']
-    #del params['skip']
-    #del params['limit']
-    resp = models.Api.getSome()
+    resp = models.Api.getTreeMap(params)
+    return HttpResponse(json_util.dumps(resp), content_type='application/json', status=200)
+
+@api_view(['GET'])
+def get_streamMap(request, *args, **kwargs):
+    params = url_params(request)
+    print(params)
+    resp = models.Api.getStreamMap(params)
     return HttpResponse(json_util.dumps(resp), content_type='application/json', status=200)

@@ -26,3 +26,8 @@ db.exp.aggregate([
         $sort:{"valorTotal":-1,"_id.paiNome":1}
     }
 ])
+
+
+
+
+[{"$match": { "MES": { "$gte": 2, "$lte": 6 } }}, {"$group":{"_id":{ "pais": "$PAIS_PT", "mes":"$MES"},"valorTotal": {"$sum":"$VALOR"}, "valorMedio": { "$avg": "$VALOR" }, "quantidade": {"$sum":1} }}, {"$sort":{"_id.pais":1,"_id.mes":1}}]
