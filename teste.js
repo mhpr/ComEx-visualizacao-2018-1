@@ -13,6 +13,16 @@ function get_data(params, sucess) {
         });
 
 };
+Number.prototype.formatMoney = function(c, d, t){
+    var n = this, 
+    c = isNaN(c = Math.abs(c)) ? 2 : c, 
+    d = d == undefined ? "," : d, 
+    t = t == undefined ? "." : t, 
+    s = n < 0 ? "-" : "", 
+    i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))), 
+    j = (j = i.length) > 3 ? j % 3 : 0;
+   return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+ };
 
 var width = 960,
         height = 700,
@@ -57,7 +67,7 @@ var createSunburst = (data) => {
         .style("fill", function (d) { return color((d.children ? d : d.parent).data.name); })
         .on("click", click)
         .append("title")
-        .text(function (d) { return d.data.name + "\n"  + d.data.valorTotal ; });
+        .text(function (d) {if(d.data.valorTotal != undefined) return d.data.name + "\n$ "  + (d.data.valorTotal).formatMoney(2) ;else return d.data.name; });
 }
 function click(d) {
     
