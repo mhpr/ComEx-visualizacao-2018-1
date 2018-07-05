@@ -89,7 +89,7 @@ if __name__ == "__main__":
 
         for k in ncm_mem:
             if i['CO_NCM'] == k['CO_NCM']:
-                auxHash['PRODUTO'] = k['NO_NCM_POR']
+                auxHash['PRODUTO'] = k['NO_NCM_ING']
                 auxHash['SUBSET'] = int(k['CO_EXP_SUBSET'])
                 auxHash['PPE'] = int(k['CO_PPE'])
                 break
@@ -125,7 +125,7 @@ if __name__ == "__main__":
     print(data[1])
     print(data[2])
     print(data[3])
-    MA = MongoApi("comExBrasil","exp")
-    MA.insertIntoDb(data)
+    #MA = MongoApi("comExBrasil","exp")
+    #MA.insertIntoDb(data)
 
     

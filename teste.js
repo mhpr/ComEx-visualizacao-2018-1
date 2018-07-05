@@ -1,15 +1,17 @@
-function get_data(params, sucess) {
-    url = 'http://localhost:8000/api/getSomething?' + params
+function get_data(path ,params, sucess) {
+    url = 'http://localhost:8000'+ path + params
     const myRequest = new Request(url, { method: 'GET' });
     fetch(myRequest)
         .then(response => {
             return response.json();
         })
         .then(response => {
+            console.log(response)
             sucess(response)
         })
         .catch(error => {
             console.log(error);
+            console.log("aquiiiiiiiii")
         });
 
 };
@@ -47,18 +49,22 @@ var width = 960,
         .outerRadius(function (d) { return Math.max(0, y(d.y1)); });
 
 
-    var svg = d3.select("body").append("svg")
+    var svg = d3.select("body").select("#sunBurstDiv").append("svg")
         .attr("width", width)
         .attr("height", height)
+        .attr("id","sunBurst")
+        .attr("class","inactive")
         .append("g")
         .attr("transform", "translate(" + width / 2 + "," + (height / 2) + ")");
 
 var createSunburst = (data) => {
-    
-
+    console.log("sunBrust")
+    svg.attr("class","active")
+    var color = d3.scaleOrdinal(d3.schemeCategory20);
     root = d3.hierarchy(data, (d) => d.children)
         .sum((d) => d.valorTotal);
-
+    
+    svg.selectAll("path").remove()
     svg.selectAll("path")
         .data(partition(root).descendants())
         .enter().append("path")
@@ -85,102 +91,9 @@ function click(d) {
 
 d3.select(self.frameElement).style("height", 700 + "px");
 
-var createTreemap = (data) => {
-    console.log(data)
-    const margin = { top: 40, right: 10, bottom: 10, left: 10 },
-        width = 960 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom,
-        color = d3.scaleOrdinal().range(d3.schemeCategory20c);
 
-    const treemap = d3.treemap()
-        //.size([width, height])
-        .tile(d3.treemapSquarify.ratio(1))
-        .size([width, height]);
-
-    const div = d3.select("body").append("div")
-        .style("position", "relative")
-        .style("width", (width + margin.left + margin.right) + "px")
-        .style("height", (height + margin.top + margin.bottom) + "px")
-        .style("left", margin.left + "px")
-        .style("top", margin.top + "px");
-
-    const root = d3.hierarchy(data, (d) => d.children)
-        .sum((d) => d.valorTotal);
-
-    console.log(root);
-
-    const tree = treemap(root);
-
-    console.log(tree.ancestors());
-
-    const node = div.datum(root).selectAll(".node")
-        .data(tree.leaves())
-        .enter().append("div")
-        .attr("class", "node")
-        .style("left", (d) => d.x0 + "px")
-        .style("top", (d) => d.y0 + "px")
-        .style("width", (d) => Math.max(0, d.x1 - d.x0) + "px")
-        .style("height", (d) => Math.max(0, d.y1 - d.y0) + "px")
-        .style("background", (d) => color(d.parent.data.name))
-        .text((d, i) => d.value);
-    /*var g = d3.select('svg').attr('width', 800).attr('height', 800).select('g');
-    /*var vData = {"name" : "", "info" : "test", "children" : [
-        {"name" : "", "children" : [ 
-                {"size" : 40,
-                "name" : "algo" 
-                }, 
-                {"size" : 30 ,
-                 "name":"outro"
-                }
-            ] }, 
-        {"name" : "", "children" : [ 
-                {"size" : 10,
-                "name" : "algo2"
-                 }, 
-                {"size" : 20,
-                "name" : "algo3"
-                }
-        ] }
-    ]};
-      
-    var vLayout = d3.treemap().size([800, 800]).paddingOuter(0);
-    var colorrange = ['#66c2a5','#fc8d62','#8da0cb','#e78ac3','#a6d854','#ffd92f','#e5c494',"#F1EEF6"];
-    var z = d3.scaleOrdinal()
-          .range(colorrange);
-
-    // Layout + Data
-    var vRoot = d3.hierarchy(data).sum(function (d) {console.log(d.valorTotal); return d.valorTotal; });
-    var vNodes = vRoot.descendants();
-    vLayout(vRoot);
-    //var vSlices = g.selectAll('rect').data(vNodes).enter().append('rect');
-    var vSlices = g.selectAll('g').data(vNodes).enter().append('g');
-    var colors = ['white','#fbb4ae','#decbe4','#fbb4ae','#fbb4ae','#decbe4','#decbe4','#e5d8bd']
-    // Draw on screen
-    vSlices.append('rect')
-        .attr('x', function (d) { return d.x0; })
-        .attr('y', function (d) { return d.y0; })
-        .attr('width', function (d) { return d.x1*2 - d.x0*2; })
-        .attr('height', function (d) { return d.y1*2 - d.y0*2; })
-        .attr('fill', (d,i) => {return z(i) })
-        .attr('stroke',"white")
-        .attr('class',"treeCell");
-    vSlices.append('text')
-    .attr('x', function (d) { return d.x0 + 10; })
-    .attr('y', function (d) { return d.y0 + 15; })
-    .attr('width', function (d) { return d.x1 - d.x0; })
-    .text((d)=>{return d.data.name})
-    .attr("class","span");
-    */
-}
-
-function tree() {
-    d3.json('cingapuraTree.txt', function (data) {
-        //createTreemap(data);
-        createSunburst(data);
-    })
-}
-
-function createStreamGraph(csvpath, color) {
+function createStreamGraph(DATA) {
+    color = "orange"
     if (color == "blue") {
         colorrange = ["#045A8D", "#2B8CBE", "#74A9CF", "#A6BDDB", "#D0D1E6", "#F1EEF6"];
     }
@@ -201,10 +114,9 @@ function createStreamGraph(csvpath, color) {
         || document.body.clientWidth) - margin.left - margin.right;
     var height = 400 - margin.top - margin.bottom;
 
-    var tooltip = d3.select("body")
+    var tooltip = d3.select("#streamGraphDiv")
         .append("div")
         .attr("class", "tip")
-        .style("position", "absolute")
         .style("z-index", "20")
         .style("visibility", "hidden");
 
@@ -240,21 +152,19 @@ function createStreamGraph(csvpath, color) {
     .y1(function(d) { return y(d[1]); })
     .curve(d3.curveCardinalOpen);*/
 
-    var svg = d3.select(".chart").append("svg")
+    var svg = d3.select("#streamGraphDiv").select(".chart").append("svg")
+        .attr("id","StreamView")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-    var graph = d3.json('cingapura.txt', function (data) {
+        .append("g");
 
         var stack = d3.stack()
-            .keys(data.paises)
+            .keys(DATA.paises)
             .order(d3.stackOrderNone)
             .offset(d3.stackOffsetSilhouette);
 
-        var layers = stack(data.data);
-        console.log(data);
+        var layers = stack(DATA.data);
+        console.log(DATA);
         x.domain([1, 12]);
         y.domain(d3.extent(layers, function (layer) { return d3.max(layer, function (d) { return d[0] + d[1]; }); }));
 
@@ -289,7 +199,15 @@ function createStreamGraph(csvpath, color) {
                 var invertedx = x.invert(mousex);
                 invertedx = Math.round(invertedx);
                 key = d.key;
-                tree();
+                if (d.key == "outros"){
+                    param = '&tpr=10'
+                }else{
+                    param = '&pais=' + d.key
+                }               
+                
+                document.getElementById("StreamView").remove()
+                get_data("/api/getStreamMap?",param,createStreamGraph)
+                get_data("/api/getTreeMap?",param,createSunburst)
             })
             .on("mousemove", function (d, i) {
 
@@ -312,7 +230,7 @@ function createStreamGraph(csvpath, color) {
                     .classed("hover", true)
                     .attr("stroke", strokecolor)
                     .attr("stroke-width", "0.5px"),
-                    tooltip.html("<div class='month'>" + invertedx + "</div><div class='pais'><div style='background:" + color + "' class='swatch'>&nbsp;</div>" + key + "</div><div class='value'>" + 'R$ ' + d[invertedx - 1].data[key] * 1000000 + "</div>").style("visibility", "visible");
+                    tooltip.html("<div class='month'>" + invertedx + "</div><div class='pais'><div style='background:" + color + "' class='swatch'>&nbsp;</div>" + key + "</div><div class='value'>" + 'US$ ' + (d[invertedx - 1].data[key] * 1000000).formatMoney(2) + "</div>").style("visibility", "visible");
 
             })
             .on("mouseout", function (d, i) {
@@ -348,10 +266,13 @@ function createStreamGraph(csvpath, color) {
                 mousex = mousex[0] + 5;
                 vertical.style("left", mousex + "px")
             });
-    });
+
 }
 
-
-createStreamGraph("teste.json", 'orange');
+get_data("/api/getStreamMap?",'&tpa=10',createStreamGraph)
+//get_data("/api/getStreamMap?",'&tpa=10',createStreamGraph)
+//createStreamGraph("teste.json", 'orange');
 //tree();
 //get_data('data="algo"&outra="coisa"',createTreemap)
+
+
