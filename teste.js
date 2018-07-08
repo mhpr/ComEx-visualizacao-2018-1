@@ -274,7 +274,7 @@ function mountFilter(params){
             for(var i = 0 ; i < paises.length ; i++){
                 filter = filter + paises[i];
                 if(i !== paises.length -1){
-                    filter = filter + ",";
+                    filter = filter + "||";
                 }
             }
         }

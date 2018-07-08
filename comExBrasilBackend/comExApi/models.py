@@ -29,7 +29,7 @@ class Api(object):
             mes["MES"]["$gte"] = params["gte"]
 
         if "pais" in params:
-            pais["PAIS_EN"] = {"$in": params["pais"].split(",")}
+            pais["PAIS_EN"] = {"$in": params["pais"].split("||")}
 
         if mes["MES"] :
             filter.append(mes)
@@ -58,7 +58,7 @@ class Api(object):
         match = cls.buildPipe(params)
         print(match)
         if cls.pais_stat:
-            paises = params["pais"].split(",")
+            paises = params["pais"].split("||")
         if "tpr" or "tpa" in params:
             pipe0 = []
             pipe0.append({"$group" :{"_id": "$PAIS_EN", "valorTotal": {"$sum":"$VALOR"}, "quantidade": {"$sum":1} }})
