@@ -59,6 +59,9 @@ if __name__ == "__main__":
     unit = open('./csvData/NCM_UNIDADE.csv', 'r')
     unidade = csv.DictReader(unit, delimiter=';')
 
+    unit = open('./csvData/SUBSET.csv', 'r')
+    subset = csv.DictReader(unit, delimiter=';')
+
     data=[]
     estados_mem=[]
     ncm_mem=[]
@@ -66,6 +69,7 @@ if __name__ == "__main__":
     country_mem=[]
     unidade_mem=[]
     exportacao_mem=[]
+    subSet_mem=[]
 
     for j in estados:      
         estados_mem.append(j)
@@ -77,6 +81,9 @@ if __name__ == "__main__":
         country_mem.append(m)
     for n in unidade:    
         unidade_mem.append(n)
+    
+    for o in subset:    
+        subSet_mem.append(o)
 
     for index, i in enumerate(exportacao):
         auxHash = {}
@@ -90,8 +97,6 @@ if __name__ == "__main__":
         for k in ncm_mem:
             if i['CO_NCM'] == k['CO_NCM']:
                 auxHash['PRODUTO'] = k['NO_NCM_ING']
-                auxHash['SUBSET'] = int(k['CO_EXP_SUBSET'])
-                auxHash['PPE'] = int(k['CO_PPE'])
                 break
 
         for l in vias_mem:
@@ -110,22 +115,25 @@ if __name__ == "__main__":
                 auxHash['NOME_UNIDADE'] = n['NO_UNID']
                 auxHash['SIGLAS_UNIDADE'] = n['SG_UNID']
                 break
-        print("auxHash antes = {}".format(auxHash))
+
+        for o in subSet_mem:
+            if i['CO_NCM'] == o['CO_NCM']:
+                auxHash['SET'] = o['NO_EXP_SET_ING']
+                auxHash['SUBSET'] = o['NO_EXP_SUBSET_ING']
+                break
+
+        
         #print("{} %".format(porcent))
-        #time.sleep(1)
+
         auxHash['ANO'] = int(i['CO_ANO'])
         auxHash['MES'] = int(i['CO_MES'])
         auxHash['QT_ESTAT'] = int(i['QT_ESTAT'])
         auxHash['PESO_LIQUIDO_KG'] = int(i['KG_LIQUIDO'])
         auxHash['VALOR'] = int(i['VL_FOB'])
-
+        print("auxHash = {}".format(auxHash))
         data.append(auxHash)
 
-    print(data[0])
-    print(data[1])
-    print(data[2])
-    print(data[3])
-    #MA = MongoApi("comExBrasil","exp")
-    #MA.insertIntoDb(data)
+    MA = MongoApi("comExBrasil","exp")
+    MA.insertIntoDb(data)
 
     
