@@ -139,22 +139,29 @@ class Api(object):
         if match:
             pipe.append(match)
 
-        pipe.append({"$group" :{"_id":{ "paiNome": "$SUBSET", "filhoNome":"$PRODUTO"},"valorTotal": {"$sum":"$VALOR"},"pesoTotal": {"$sum":"$PESO_LIQUIDO_KG"},"quantidade": {"$sum":1} }})
-        pipe.append({"$sort":{"valorTotal":-1,"_id.paiNome":1}})
+        pipe.append({"$group" :{"_id":{ "paiNome": "$SET", "filhoNome":"$SUBSET", "netoNome":"$PRODUTO"},"valorTotal": {"$sum":"$VALOR"},"pesoTotal": {"$sum":"$PESO_LIQUIDO_KG"},"quantidade": {"$sum":1} }})
+        pipe.append({"$sort":{"valorTotal":-1,"_id.paiNome":1, "_id.filhoNome":1}})
         collection = cls.importacao_collection if imp else cls.exportacao_collection
         pointer = collection.aggregate(pipe)
         resp = {"name":"ROOT","children" :[]}
         contador = 0
+        contador2 = 0
         alocation = {}
+        alocation2 = {}
         for line in pointer:
             name = line.pop("_id")
             if not (name["paiNome"] in alocation):
                 alocation[name["paiNome"]] = contador
                 contador = contador + 1
                 resp["children"].append({"name":name["paiNome"],"children":[]})
+            
+            if not (name["filhoNome"] in alocation2):
+                alocation2[name["filhoNome"]] = contador2
+                contador2 = contador2 + 1
+                resp["children"][alocation[name["paiNome"]]]["children"].append({"name":name["filhoNome"],"children":[]})
         
-            child = dict({"name":name["filhoNome"]},**line) 
-            resp["children"][alocation[name["paiNome"]]]["children"].append(child)
+            neto = dict({"name":name["netoNome"]},**line) 
+            resp["children"][alocation[name["paiNome"]]]["children"][alocation2[name["filhoNome"]]].append(neto)
 
         return resp
 
