@@ -100,8 +100,9 @@ class Api(object):
         for line in pointer:
             current = line["_id"]["mes"]
             if old != current:
-                mes = cls.trataMes(mes,paises,topPaises)
-                data.append(mes)
+                if mes:
+                    mes = cls.trataMes(mes,paises,topPaises)
+                    data.append(mes)
                 mes = {}
                 mes["mes"] = current
 
@@ -151,17 +152,15 @@ class Api(object):
         for line in pointer:
             name = line.pop("_id")
             if not (name["paiNome"] in alocation):
-                alocation[name["paiNome"]] = contador
+                alocation[name["paiNome"]] = {"contador":contador,"filhos":{}}
                 contador = contador + 1
                 resp["children"].append({"name":name["paiNome"],"children":[]})
-            
-            if not (name["filhoNome"] in alocation2):
-                alocation2[name["filhoNome"]] = contador2
-                contador2 = contador2 + 1
-                resp["children"][alocation[name["paiNome"]]]["children"].append({"name":name["filhoNome"],"children":[]})
-        
+            if not (name["filhoNome"] in alocation[name["paiNome"]]["filhos"]):
+                alocation[name["paiNome"]]["filhos"][name["filhoNome"]] = len(alocation[name["paiNome"]]["filhos"].keys())
+                resp["children"][alocation[name["paiNome"]]["contador"]]["children"].append({"name":name["filhoNome"],"children":[]})
+ 
             neto = dict({"name":name["netoNome"]},**line) 
-            resp["children"][alocation[name["paiNome"]]]["children"][alocation2[name["filhoNome"]]].append(neto)
+            resp["children"][alocation[name["paiNome"]]["contador"]]["children"][alocation[name["paiNome"]]["filhos"][name["filhoNome"]]]["children"].append(neto)
 
         return resp
 
