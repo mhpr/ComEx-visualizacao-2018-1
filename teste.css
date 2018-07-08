@@ -10,7 +10,7 @@
     border-radius: 5px;
     margin-bottom: 20px !important;
     padding: 10px;
-    position: center;
+    position: relative
 }
 
 #sunBurst{
@@ -18,15 +18,7 @@
     border-radius: 5px;
     margin-bottom: 20px !important;
     padding: 10px;
-    position: center;
-}
-
-#sunBurst .inactive{
-    display: none;
-}
-
-#sunBurst .active{
-    display: block;
+    position: relative;
 }
 
 .treeCell{
@@ -39,6 +31,7 @@ body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     position: relative;
     width: 960px;
+    display: inline-block;
 }
 
 form {
@@ -73,12 +66,6 @@ p {
     shape-rendering: crispEdges;
 }
 
-button {
-    position: absolute;
-    right: 50px;
-    top: 10px;
-}
-
 
 .tip {
     border: 1px solid black;
@@ -105,4 +92,36 @@ button {
     float: left;
     margin-top: 6px;
     margin-right: 4px;
+}
+
+.contentVis{
+    width:65%;
+    float: left;
+}
+
+.filterMenu{
+    margin-top: 7%;
+    width:30%;
+    margin-right:2%;
+    float: left;
+}
+.filter{
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+#sunBurstDiv{
+    display: none;
+}
+
+#streamGraphDiv{
+    display: none;
+}
+
+.filterMenu{
+    border: solid 3px black;
+    border-radius: 5px;
+}
+.showMonth{
+    width: 15px;
 }

@@ -74,7 +74,10 @@ var createSunburst = (data) => {
         .on("click", click)
         .append("title")
         .text(function (d) {if(d.data.valorTotal != undefined) return d.data.name + "\n$ "  + (d.data.valorTotal).formatMoney(2) ;else return d.data.name; });
+    
+    toggleSunBurst()
 }
+
 function click(d) {
     
     svg.transition()
@@ -113,7 +116,8 @@ function createStreamGraph(DATA) {
         || document.documentElement.clientWidth
         || document.body.clientWidth) - margin.left - margin.right;
     var height = 400 - margin.top - margin.bottom;
-
+    
+    d3.select("#streamGraphDiv").selectAll(".tip").remove()
     var tooltip = d3.select("#streamGraphDiv")
         .append("div")
         .attr("class", "tip")
@@ -206,8 +210,11 @@ function createStreamGraph(DATA) {
                 }               
                 
                 document.getElementById("StreamView").remove()
+                toggleStreamMap()
+                toggleSunBurst()
                 get_data("/api/getStreamMap?",param,createStreamGraph)
                 get_data("/api/getTreeMap?",param,createSunburst)
+                
             })
             .on("mousemove", function (d, i) {
 
@@ -218,13 +225,7 @@ function createStreamGraph(DATA) {
                 console.log(d);
                 var selected = (d.data);
                 var color = d3.select(this).style('fill');
-                /*for (var k = 0; k < selected.length; k++) {
-                  datearray[k] = selected[k].date
-                  datearray[k] = datearray[k].getMonth() + datearray[k].getDate();
-                }
-          
-                mousedate = datearray.indexOf(invertedx);
-                pro = d.values[mousedate].value;*/
+        
                 key = d.key;
                 d3.select(this)
                     .classed("hover", true)
@@ -243,33 +244,130 @@ function createStreamGraph(DATA) {
                     .attr("stroke-width", "1px"), tooltip.html("<p>" + d.key + "<br>" + "</p>").style("visibility", "hidden");
             })
 
-        var vertical = d3.select(".chart")
-            .append("div")
-            .attr("class", "remove")
-            .style("position", "absolute")
-            .style("z-index", "19")
-            .style("width", "1px")
-            .style("height", "380px")
-            .style("top", "10px")
-            .style("bottom", "30px")
-            .style("left", "0px")
-            .style("background", "#fff");
-
-        d3.select(".chart")
-            .on("mousemove", function () {
-                mousex = d3.mouse(this);
-                mousex = mousex[0] + 5;
-                vertical.style("left", mousex + "px")
-            })
-            .on("mouseover", function () {
-                mousex = d3.mouse(this);
-                mousex = mousex[0] + 5;
-                vertical.style("left", mousex + "px")
-            });
+        toggleStreamMap()
 
 }
 
+function mountFilter(params){
+    filter = ""
+    filter = filter + "&lte=" + document.getElementsByName("monthlte")[0].value
+    filter = filter + "&gte=" + document.getElementsByName("monthgte")[0].value
+    var aggregationElem = document.getElementsByName("aggregation")
+    var aggregation = ""
+    for(var i = 0 ; i < aggregationElem.length; i++){
+        if (aggregationElem[i].checked){
+            aggregation = aggregationElem[i].value
+        }
+    }
+    if (aggregation != "none"){
+        filter = filter + "&" + aggregation + "=" + document.getElementsByName("valorTop")[0].value
+    }else{
+        var paisesElem = document.getElementsByName("pais")
+        var paises = []
+        for(var i = 0 ; i < paisesElem.length; i++){
+            if (paisesElem[i].checked){
+                paises.push(paisesElem[i].value)
+            }
+        }
+        if (paises.length > 0){
+            filter = filter + "&pais="
+            for(var i = 0 ; i < paises.length ; i++){
+                filter = filter + paises[i];
+                if(i !== paises.length -1){
+                    filter = filter + ",";
+                }
+            }
+        }
+    }
+    
+    toggleStreamMap()
+    toggleSunBurst()
+    document.getElementById("StreamView").remove()
+    get_data("/api/getStreamMap?",filter,createStreamGraph)
+    get_data("/api/getTreeMap?",filter,createSunburst)
+}
+
+function paisCheckBoxMount(DATA) {
+    var drpcont = d3.select(".checkbox-content");
+    drpcont.selectAll("input").remove()
+    for(var i =  0; i < DATA.length; i++){
+        drpcont.append("input")
+        .attr("type", "checkbox")
+        .attr("name", "pais")
+        .attr("value", DATA[i]);
+        drpcont.append("label")
+        .text(DATA[i])
+        drpcont.append("br");
+
+    } 
+}
+function toggleCheckbox() {
+    var x = document.getElementsByClassName("checkbox-content");
+    var y = document.getElementsByClassName("drop1");
+    if (x[0].style.display === "none") {
+        x[0].style.display = "block";   
+        y[0].innerHTML = "Hide"
+    } else {
+        x[0].style.display = "none";
+        y[0].innerHTML = "Show"
+    }
+    
+}
+
+function toggleaggregation() {
+    var x = document.getElementsByClassName("aggregation-content");
+    var y = document.getElementsByClassName("drop2");
+    if (x[0].style.display === "none") {
+        x[0].style.display = "block";   
+        y[0].innerHTML = "Hide"
+    } else {
+        x[0].style.display = "none";
+        y[0].innerHTML = "Show"
+    }
+    
+}
+
+function toggleMonth() {
+    var x = document.getElementsByClassName("month-content");
+    var y = document.getElementsByClassName("drop3");
+    if (x[0].style.display === "none") {
+        x[0].style.display = "block";   
+        y[0].innerHTML = "Hide"
+    } else {
+        x[0].style.display = "none";
+        y[0].innerHTML = "Show"
+    }
+    
+}
+
+function toggleSunBurst() {
+    console.log("aqui1");
+    var x = document.getElementById("streamGraphDiv");
+    console.log(x.style.display)
+    if (x.style.display === "block") {
+        x.style.display = "none";
+    } else {
+        x.style.display = "block";
+    }
+    
+}
+
+function toggleStreamMap() {
+    console.log("aqui2");
+    var x = document.getElementById("sunBurstDiv");
+    console.log(x.style.display)
+    if (x.style.display === "block") {
+        x.style.display = "none";
+    } else {
+        x.style.display = "block";
+    }
+    
+}
+
+get_data("/api/getPaises",'',paisCheckBoxMount)
 get_data("/api/getStreamMap?",'&tpa=10',createStreamGraph)
+get_data("/api/getTreeMap?",'&tpa=10',createSunburst)
+
 //get_data("/api/getStreamMap?",'&tpa=10',createStreamGraph)
 //createStreamGraph("teste.json", 'orange');
 //tree();

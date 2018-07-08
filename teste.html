@@ -11,14 +11,78 @@
 </head>
 
 <body>
-    <div id = "streamGraphDiv">
-        <h2>Stream Graph</h2>
-        <div class="chart"></div>
-    </div>
-    <div id = "sunBurstDiv">
-        <h2>Sun Burst</h2>
+    <div class="filterMenu">
+        <div class="filter">
+                <div class="checkbox">
+                        <h5 class="checkboxHeader" >Select Countries
+                            <button class="drop1" onclick="toggleCheckbox()">Show</button>
+                        </h5>
+                        
+                        <div class="checkbox-content" style="display: none">
         
+                        </div>
+                </div>
+        
+                <div class="aggregation">
+                        <h5 class="aggregationHeader" >Select Aggregation Mode
+                            <button class="drop2" onclick="toggleaggregation()">Show</button>
+                        </h5>
+                        
+                        <div class="aggregation-content" style="display: none">
+                            <input type="radio" name="aggregation" value="tpr">
+                            <label> Remove top Countries </label>
+                            <br>
+                            <input type="radio" name="aggregation" value="tpa" checked="true">
+                            <label> Select top Countries </label>
+                            <br>
+                            <input type="radio" name="aggregation" value="none">
+                            <label> No Filter </label>
+                            <br>
+                            <br>
+                            <label> Top Value </label>
+                            <br>
+                            <label> 1 </label>
+                            <input id="display4" type="range" name="valorTop" value="10" min="1" max="235" onchange="display3.value=value">
+                            <label> 235 </label>
+                            <br>
+                            <input class = "showTop" min="1" max="235" type="number" id="display3" value="10" onchange="display4.value=value" >
+                            <br>
+                        </div>
+                </div>
+        
+                <div class="month">
+                        <h5 class="monthHeader" >Select Month Range
+                            <button class="drop3" onclick="toggleMonth()">Show</button>
+                        </h5>
+                        
+                        <div class="month-content" style="display: none">
+                            <label> From  </label>
+                            <br>
+                            <input type="range" name="monthgte" value="1" min="1" max="12" onchange="display1.value=value">
+                            <input class = "showMonth" type="text" id="display1" value="1" readonly>
+                            <br>
+                            <br>
+                            <label> To </label>
+                            <br>
+                            <input type="range" name="monthlte" value="12" min="1" max="12" onchange="display2.value=value">
+                            <input class = "showMonth" type="text" id="display2" value="12" readonly>
+                        </div>
+                </div>
+                <button class="sendFilter" onclick="mountFilter()"> Send </button>
+        </div>
     </div>
+   
+    <div class="contentVis">
+        <div id = "streamGraphDiv">
+            <h2>Stream Graph</h2>
+            <div class="chart"></div>
+        </div>
+        <div id = "sunBurstDiv">
+            <h2>Sun Burst</h2>
+            
+        </div>
+    </div>
+    
     
     <Script src="teste.js"></Script>
 

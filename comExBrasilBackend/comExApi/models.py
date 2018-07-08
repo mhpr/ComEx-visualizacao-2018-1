@@ -29,7 +29,7 @@ class Api(object):
             mes["MES"]["$gte"] = params["gte"]
 
         if "pais" in params:
-            pais["PAIS_EN"] = params["pais"]
+            pais["PAIS_EN"] = {"$in": params["pais"].split(",")}
 
         if mes["MES"] :
             filter.append(mes)
@@ -38,6 +38,7 @@ class Api(object):
             filter.append(pais)
         if len(filter) > 0:
             match["$match"] = {"$and": filter}
+        print(filter)
         return match
 
     def trataMes(mes,paises,topPaises):
@@ -55,8 +56,9 @@ class Api(object):
         topPaises = []
         tpa = False
         match = cls.buildPipe(params)
+        print(match)
         if cls.pais_stat:
-            paises = [params["pais"]]
+            paises = params["pais"].split(",")
         if "tpr" or "tpa" in params:
             pipe0 = []
             pipe0.append({"$group" :{"_id": "$PAIS_EN", "valorTotal": {"$sum":"$VALOR"}, "quantidade": {"$sum":1} }})
@@ -92,50 +94,42 @@ class Api(object):
         pointer = collection.aggregate(pipe)
         
         data = []
-        old = 1
+        old = -1
         mes = {}
-        mes["mes"] = 1
+        #mes["mes"] = 1
         for line in pointer:
             current = line["_id"]["mes"]
             if old != current:
-                
-                print(mes)
                 mes = cls.trataMes(mes,paises,topPaises)
-                print("depois")
-                print(mes)
                 data.append(mes)
                 mes = {}
                 mes["mes"] = current
 
             if cls.pais_stat:
-                print("aqui1")
+               
                 if line["_id"]["pais"] in paises:
                     mes[line["_id"]["pais"]] = line["valorTotal"] / 100000
             elif tpa:
-                print("aqui2")
+               
                 if not (line["_id"]["pais"] in topPaises):
-                    print("aqui3")
+                    
                     if not "outros" in mes :
-                        print("aqui4")
+                       
                         mes["outros"] = 0
                     mes["outros"] += line["valorTotal"] / 100000
                 else:
-                    print("aqui5")
+                   
                     mes[line["_id"]["pais"]] = line["valorTotal"] / 100000
             elif not (line["_id"]["pais"] in topPaises):
-                print("aqui6")
+              
                 mes[line["_id"]["pais"]] = line["valorTotal"] / 100000
             
             old = current
 
         if mes:
-            print(mes)
             data.append(mes)
             
-        
-        print(paises)
         resp = {"paises":paises,"data":data}
-        print(resp) 
         return resp
     
     @classmethod
@@ -163,3 +157,10 @@ class Api(object):
             resp["children"][alocation[name["paiNome"]]]["children"].append(child)
 
         return resp
+
+    @classmethod
+    def getPaises(cls,imp=False,**kwargs):
+        collection = cls.importacao_collection if imp else cls.exportacao_collection
+        paises = collection.distinct("PAIS_EN")
+        paises.sort()
+        return paises

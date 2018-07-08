@@ -36,3 +36,10 @@ def get_streamMap(request, *args, **kwargs):
     print(params)
     resp = models.Api.getStreamMap(params)
     return HttpResponse(json_util.dumps(resp), content_type='application/json', status=200)
+
+@api_view(['GET'])
+def get_paises(request, *args, **kwargs):
+    resp = models.Api.getPaises()
+    params = url_params(request)
+    print(params)
+    return HttpResponse(json_util.dumps(resp), content_type='application/json', status=200)
