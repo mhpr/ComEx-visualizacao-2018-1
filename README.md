@@ -1,32 +1,9 @@
-## Welcome to GitHub Pages
+## Descrição
+Nosso projeto consiste numa ferramenta para visualização de dados de exportação do comércio exterior brasileiro em 2017, focando principalmente nos países que exportam do Brasil e quais produtos estão sendo exportados.
 
-You can use the [editor on GitHub](https://github.com/mhpr/ComEx-visualizacao-2018-1/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+## Dataset
+O Dataset utilizado consiste em vários arquivos .CSV que contém informações como código do produto exportado, valor, peso, país de destino etc. e está disponível no site do [Ministério da Indústria, Comércio Exterior e Serviços](http://www.mdic.gov.br/index.php/comercio-exterior/estatisticas-de-comercio-exterior/base-de-dados-do-comercio-exterior-brasileiro-arquivos-para-download)
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
-
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
 
 ### Jekyll Themes
 
