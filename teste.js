@@ -26,7 +26,7 @@ Number.prototype.formatMoney = function(c, d, t){
    return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
  };
 
-var width = 960,
+    var width = 960,
         height = 700,
         radius = (Math.min(width, height) / 2) - 10;
 
@@ -150,12 +150,6 @@ function createStreamGraph(DATA) {
         .y1(function (d) { return y(d[1]); })
         .curve(d3.curveBasis);
 
-    /*var area = d3.area()
-    .x(function(d) { console.log(d); return x(d.data.mes); })
-    .y0(function(d) { return y(d[0]); })
-    .y1(function(d) { return y(d[1]); })
-    .curve(d3.curveCardinalOpen);*/
-
     var svg = d3.select("#streamGraphDiv").select(".chart").append("svg")
         .attr("id","StreamView")
         .attr("width", width + margin.left + margin.right)
@@ -165,12 +159,15 @@ function createStreamGraph(DATA) {
         var stack = d3.stack()
             .keys(DATA.paises)
             .order(d3.stackOrderNone)
-            .offset(d3.stackOffsetSilhouette);
+            .offset(d3.stackOffsetDiverging);
 
         var layers = stack(DATA.data);
-        console.log(DATA);
-        x.domain([1, 12]);
-        y.domain(d3.extent(layers, function (layer) { return d3.max(layer, function (d) { return d[0] + d[1]; }); }));
+        
+        console.log(layers)
+        console.log(d3.extent(layers, function (layer) { return d3.min(layer, function (d) { return d[0]+d[1]; }); }));
+        
+        x.domain(d3.extent(DATA.data, function(d){return d.mes}));
+        y.domain([0, d3.max(layers, function (layer) { return d3.max(layer, function (d) { return d[0] + d[1]; }); })]);
 
         //console.log(d3.extent(layers, function(layer) { return layer.data.mes;}))
         svg.selectAll(".layer")
