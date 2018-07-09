@@ -133,7 +133,11 @@ function createStreamGraph(DATA) {
     var z = d3.scaleOrdinal()
         .range(colorrange);
 
-    var xAxis = d3.axisBottom(x);
+    var meses = []
+    for(var i = 0; i < DATA.data.length; i++){
+        meses.push(DATA.data[i].mes);
+    }
+    var xAxis = d3.axisBottom(x).tickValues(meses).tickFormat(d3.format("d"));;
 
     var yAxis = d3.axisLeft(y);
 
@@ -174,13 +178,14 @@ function createStreamGraph(DATA) {
             .data(layers)
             .enter().append("path")
             .attr("class", "layer")
+            .attr("transform", "translate(10,0)")
             .attr("d", area)
             .style("fill", function (d, i) { return z(i); })
             .style("stroke", '#404040');
 
         svg.append("g")
             .attr("class", "x axis")
-            .attr("transform", "translate(0," + height + ")")
+            .attr("transform", "translate(10," + height + ")")
             .call(xAxis);
 
 
