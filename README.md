@@ -5,5 +5,5 @@ Nosso projeto consiste numa ferramenta para visualização de dados de exportaç
 O Dataset utilizado consiste em vários arquivos .CSV que contém informações como código do produto exportado, valor, peso, país de destino etc. e está disponível no site do [Ministério da Indústria, Comércio Exterior e Serviços](http://www.mdic.gov.br/index.php/comercio-exterior/estatisticas-de-comercio-exterior/base-de-dados-do-comercio-exterior-brasileiro-arquivos-para-download)
 
 ## Contato
-[Matheus Ramos](github.com/mhpr)
-[Pedro Esposito](github.com/PedroEsposito)
+-[Matheus Ramos](github.com/mhpr)  
+-[Pedro Esposito](github.com/PedroEsposito)
