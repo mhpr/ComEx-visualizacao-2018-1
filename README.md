@@ -6,7 +6,7 @@ O Dataset utilizado consiste em vários arquivos .CSV que contém informações 
 
 ## Links
 [Slides](https://docs.google.com/presentation/d/1KD6xUuLJXKuLjap5PO3ZQhBdVXqEupCK0tQxRUYaAZI/edit?usp=sharing)  
-[Demo](https://github.com/mhpr/ComEx-visualizacao-2018-1/blob/master/ComEx.html)
+[Demo](http://mhpr.github.io/ComEx-visualizacao-2018-1/ComEx.html)
 
 ## Contato
 -[Matheus Ramos](github.com/mhpr)  
