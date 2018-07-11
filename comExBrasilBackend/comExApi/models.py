@@ -7,7 +7,7 @@ import re
 
 # Create your models here.
 class Api(object):
-    mongo_client = pymongo.MongoClient(`mongodb://mhpr:291193matheus@comexbrasil-shard-00-00-oujog.mongodb.net:27017,comexbrasil-shard-00-01-oujog.mongodb.net:27017,comexbrasil-shard-00-02-oujog.mongodb.net:27017/test?ssl=true&replicaSet=comExBrasil-shard-0&authSource=admin&retryWrites=true`)
+    mongo_client = pymongo.MongoClient('mongodb://mhpr:291193matheus@comexbrasil-shard-00-00-oujog.mongodb.net:27017,comexbrasil-shard-00-01-oujog.mongodb.net:27017,comexbrasil-shard-00-02-oujog.mongodb.net:27017/test?ssl=true&replicaSet=comExBrasil-shard-0&authSource=admin&retryWrites=true')
     exportacao_collection = mongo_client["comExBrasil"]["exp"]
     importacao_collection = mongo_client["comExBrasil"]["imp"]
     pais_stat = False   
