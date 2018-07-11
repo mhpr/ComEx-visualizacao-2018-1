@@ -1,5 +1,5 @@
 function get_data(path ,params, sucess) {
-    url = 'http://localhost:8000'+ path + params
+    url = 'https://herokucomex.herokuapp.com'+ path + params
     const myRequest = new Request(url, { method: 'GET' });
     fetch(myRequest)
         .then(response => {
