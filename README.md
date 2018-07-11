@@ -1,37 +1,12 @@
-## Welcome to GitHub Pages
+## Descrição
+Nosso projeto consiste numa ferramenta para visualização de dados de exportação do comércio exterior brasileiro em 2017, focando principalmente nos países que exportam do Brasil e quais produtos estão sendo exportados.
 
-You can use the [editor on GitHub](https://github.com/mhpr/ComEx-visualizacao-2018-1/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+## Dataset
+O Dataset utilizado consiste em vários arquivos .CSV que contém informações como código do produto exportado, valor, peso, país de destino etc. e está disponível no site do [Ministério da Indústria, Comércio Exterior e Serviços](http://www.mdic.gov.br/index.php/comercio-exterior/estatisticas-de-comercio-exterior/base-de-dados-do-comercio-exterior-brasileiro-arquivos-para-download)
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## Apresentação
+[Slides](https://docs.google.com/presentation/d/1KD6xUuLJXKuLjap5PO3ZQhBdVXqEupCK0tQxRUYaAZI/edit?usp=sharing)
 
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/mhpr/ComEx-visualizacao-2018-1/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+## Contato
+-[Matheus Ramos](github.com/mhpr)  
+-[Pedro Esposito](github.com/PedroEsposito)
